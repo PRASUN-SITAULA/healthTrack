@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Logo from "@/public/images/logo.png"
+import { ThemeSwitcher } from "@/components/theme-switcher"
 
 export function Navbar() {
   return (
@@ -34,6 +35,7 @@ export function Navbar() {
             >
               <Link href="/sign-up">Sign up</Link>
             </Button>
+            <ThemeSwitcher />
           </div>
         </div>
       </div>

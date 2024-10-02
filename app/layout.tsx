@@ -1,8 +1,7 @@
-import { ThemeSwitcher } from "@/components/theme-switcher"
 import { GeistSans } from "geist/font/sans"
 import { ThemeProvider } from "next-themes"
 import "./globals.css"
-import { Navbar } from "@/components/navbar/navbar"
+import { NavbarWrapper } from "@/components/navbar/NavbarWrapper"
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -29,7 +28,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="flex min-h-screen flex-col items-center">
-            <Navbar />
+            <NavbarWrapper />
+            {children}
           </main>
         </ThemeProvider>
       </body>
