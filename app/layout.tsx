@@ -1,7 +1,7 @@
 import { GeistSans } from "geist/font/sans"
 import { ThemeProvider } from "next-themes"
 import "./globals.css"
-import { NavbarWrapper } from "@/components/navbar/NavbarWrapper"
+import { Navbar } from "@/components/navbar/navbar"
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -13,7 +13,7 @@ export const metadata = {
   description: "A web app to track different health metrics.",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
@@ -27,8 +27,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          {/* <NavbarWrapper /> */}
+          <Navbar />
           <main className="flex min-h-screen flex-col items-center">
-            <NavbarWrapper />
             {children}
           </main>
         </ThemeProvider>
