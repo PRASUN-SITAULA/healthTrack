@@ -29,9 +29,7 @@ export default async function RootLayout({
         >
           {/* <NavbarWrapper /> */}
           <Navbar />
-          <main className="flex min-h-screen flex-col items-center">
-            {children}
-          </main>
+          {children}
         </ThemeProvider>
       </body>
     </html>
