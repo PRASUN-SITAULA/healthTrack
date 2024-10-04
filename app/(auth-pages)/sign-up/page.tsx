@@ -1,46 +1,17 @@
-import { signUpAction } from "@/app/actions"
-import { FormMessage, Message } from "@/components/form-message"
-import { SubmitButton } from "@/components/submit-button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { UserForm } from "@/components/form/userForm"
 import Link from "next/link"
 
-export default function Signup({ searchParams }: { searchParams: Message }) {
-  if ("message" in searchParams) {
-    return (
-      <div className="flex h-screen w-full flex-1 items-center justify-center gap-2 p-4 sm:max-w-md">
-        <FormMessage message={searchParams} />
-      </div>
-    )
-  }
-
+export default function RegisterPage() {
   return (
-    <div className="flex w-full items-center justify-center">
-      <form className="mx-auto flex min-w-64 max-w-64 flex-col">
-        <h1 className="text-2xl font-medium">Sign up</h1>
-        <p className="text text-sm text-foreground">
-          Already have an account?{" "}
-          <Link className="font-medium text-primary underline" href="/sign-in">
-            Sign in
-          </Link>
-        </p>
-        <div className="mt-8 flex flex-col gap-2 [&>input]:mb-3">
-          <Label htmlFor="email">Email</Label>
-          <Input name="email" placeholder="you@example.com" required />
-          <Label htmlFor="password">Password</Label>
-          <Input
-            type="password"
-            name="password"
-            placeholder="Your password"
-            minLength={6}
-            required
-          />
-          <SubmitButton formAction={signUpAction} pendingText="Signing up...">
-            Sign up
-          </SubmitButton>
-          <FormMessage message={searchParams} />
-        </div>
-      </form>
+    <div className="justify-content flex w-full flex-col items-center">
+      <h1 className="mt-20 text-3xl">Sign Up</h1>
+      <p className="text my-8 text-sm text-foreground">
+        Already have an account?{" "}
+        <Link className="font-medium text-primary underline" href="/sign-in">
+          Sign in
+        </Link>
+      </p>
+      <UserForm />
     </div>
   )
 }

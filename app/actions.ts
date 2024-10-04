@@ -4,6 +4,8 @@ import { encodedRedirect } from "@/utils/utils"
 import { createClient } from "@/utils/supabase/server"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
+import { z } from "zod"
+import { zodUserSchema } from "@/config/zodUserSchema"
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString()
@@ -54,6 +56,30 @@ export const signInAction = async (formData: FormData) => {
     return encodedRedirect("error", "/sign-in", error.message)
   }
 
+  return redirect("/")
+}
+
+export const dummySignInAction = async () => {
+  // const email = formData.get("email") as string
+  // const password = formData.get("password") as string
+  // const supabase = createClient()
+
+  // // const { error } = await supabase.auth.signInWithOAuth({
+  // //   provider: "google",
+  // //   options: {
+  // //     redirectTo: `${origin}/auth/callback`,
+  // //   },
+  // // })
+  // const { error } = await supabase.auth.signInWithPassword({
+  //   email,
+  //   password,
+  // })
+  // if (error) {
+  //   return encodedRedirect("error", "/sign-in", error.message)
+  // }
+  setTimeout(() => {
+    console.log("dummy")
+  }, 2000)
   return redirect("/")
 }
 
