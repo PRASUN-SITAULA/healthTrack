@@ -4,5 +4,6 @@
   "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
   "importOrderSeperation": true,
   "importOrderSortSpecifiers": true,
+  "bracketSpacing": true,
   "plugins": ["prettier-plugin-tailwindcss"]
 }
