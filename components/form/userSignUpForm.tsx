@@ -4,11 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodUserSchema } from "@/config/zodUserSchema"
-import { Button } from "@/components/ui/button"
 import { format } from "date-fns"
+import { SubmitButton } from "@/components/submit-button"
 import { CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
+import { Button } from "@/components/ui/button"
 
 import {
   Form,
@@ -33,7 +34,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
-import { dummySignInAction, signInAction } from "@/app/actions"
+import { signUpAction } from "@/app/actions"
 
 export function UserForm() {
   const form = useForm<z.infer<typeof zodUserSchema>>({
@@ -44,19 +45,15 @@ export function UserForm() {
     handleSubmit,
     formState: { isSubmitting },
   } = form
-  // function onSubmit(data: z.infer<typeof zodUserSchema>) {
-  // }
-  function onSubmit() {
-    // return promise that resolves after 2 seconds
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve()
-      }, 2000)
-    })
+
+  async function onSubmit(data: z.infer<typeof zodUserSchema>) {
+    const res = await signUpAction(data)
+    console.log("form submitted successfully.")
   }
+
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(dummySignInAction)} className="space-y-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         <div className="flex items-center justify-center gap-2">
           <FormField
             control={form.control}
@@ -216,9 +213,9 @@ export function UserForm() {
           />
         </div>
         <div className="flex w-full justify-center">
-          <Button type="submit">
-            {isSubmitting ? "Signing up..." : "Sign up"}
-          </Button>
+          <SubmitButton type="submit" pending={isSubmitting}>
+            Sign Up
+          </SubmitButton>
         </div>
       </form>
     </Form>

@@ -1,7 +1,12 @@
-import { UserForm } from "@/components/form/userForm"
+import { UserForm } from "@/components/form/userSignUpForm"
 import Link from "next/link"
+import { FormMessage, Message } from "@/components/form-message"
 
-export default function RegisterPage() {
+export default function RegisterPage({
+  searchParams,
+}: {
+  searchParams: Message
+}) {
   return (
     <div className="justify-content flex w-full flex-col items-center">
       <h1 className="mt-20 text-3xl">Sign Up</h1>
@@ -12,6 +17,7 @@ export default function RegisterPage() {
         </Link>
       </p>
       <UserForm />
+      <FormMessage message={searchParams} />
     </div>
   )
 }

@@ -7,9 +7,11 @@ import { redirect } from "next/navigation"
 import { z } from "zod"
 import { zodUserSchema } from "@/config/zodUserSchema"
 
-export const signUpAction = async (formData: FormData) => {
-  const email = formData.get("email")?.toString()
-  const password = formData.get("password")?.toString()
+export const signUpAction = async (data: z.infer<typeof zodUserSchema>) => {
+  const result = zodUserSchema.safeParse(data)
+
+  const email = result.data?.email as string
+  const password = result.data?.password as string
   const supabase = createClient()
   const origin = headers().get("origin")
 
@@ -29,17 +31,15 @@ export const signUpAction = async (formData: FormData) => {
     console.error(error.code + " " + error.message)
     return encodedRedirect("error", "/sign-up", error.message)
   } else {
-    return encodedRedirect(
-      "success",
-      "/sign-up",
-      "Thanks for signing up! Please check your email for a verification link.",
-    )
+    return encodedRedirect("success", "/sign-up", "Thanks for signing up! ")
   }
 }
 
-export const signInAction = async (formData: FormData) => {
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
+export const signInAction = async (data: z.infer<typeof zodUserSchema>) => {
+  const result = zodUserSchema.safeParse(data)
+
+  const email = result.data?.email as string
+  const password = result.data?.password as string
   const supabase = createClient()
 
   // const { error } = await supabase.auth.signInWithOAuth({
@@ -59,7 +59,12 @@ export const signInAction = async (formData: FormData) => {
   return redirect("/")
 }
 
-export const dummySignInAction = async () => {
+export const dummySignInAction = async (
+  data: z.infer<typeof zodUserSchema>,
+) => {
+  const result = zodUserSchema.safeParse(data)
+  console.log("Form data received:", result.success)
+  console.log("Form data parsed:", result.data)
   // const email = formData.get("email") as string
   // const password = formData.get("password") as string
   // const supabase = createClient()
@@ -77,10 +82,11 @@ export const dummySignInAction = async () => {
   // if (error) {
   //   return encodedRedirect("error", "/sign-in", error.message)
   // }
-  setTimeout(() => {
-    console.log("dummy")
-  }, 2000)
-  return redirect("/")
+  // setTimeout(() => {
+  //   console.log("dummy")
+  // }, 2000)
+  // return redirect("/")
+  return "hello"
 }
 
 export const forgotPasswordAction = async (formData: FormData) => {
