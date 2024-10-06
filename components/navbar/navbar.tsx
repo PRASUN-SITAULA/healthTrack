@@ -25,7 +25,7 @@ export async function Navbar() {
           <div className="flex items-center justify-center gap-8">
             {user ? (
               <>
-                <span>Welcome {user?.email}</span>
+                <span>Welcome {user?.user_metadata?.name}</span>
                 <form action={signOutAction}>
                   <Button
                     size="sm"

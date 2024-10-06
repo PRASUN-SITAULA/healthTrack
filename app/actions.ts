@@ -5,38 +5,63 @@ import { createClient } from "@/utils/supabase/server"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { z } from "zod"
-import { zodUserSchema } from "@/config/zodUserSchema"
+import { signUpUserSchema } from "@/config/signUpUserSchema"
+import prisma from "@/lib/db"
 
-export const signUpAction = async (data: z.infer<typeof zodUserSchema>) => {
-  const result = zodUserSchema.safeParse(data)
+export const signUpAction = async (data: z.infer<typeof signUpUserSchema>) => {
+  const result = signUpUserSchema.safeParse(data)
 
   const email = result.data?.email as string
   const password = result.data?.password as string
   const supabase = createClient()
-  const origin = headers().get("origin")
+  // const origin = headers().get("origin")
 
   if (!email || !password) {
     return { error: "Email and password are required" }
   }
 
-  const { error } = await supabase.auth.signUp({
+  const { data: signUpData, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: `${origin}/auth/callback`,
+      data: {
+        name: result.data?.name,
+      },
     },
   })
 
   if (error) {
     console.error(error.code + " " + error.message)
     return encodedRedirect("error", "/sign-up", error.message)
-  } else {
-    return encodedRedirect("success", "/sign-up", "Thanks for signing up! ")
+  }
+  if (signUpData.user) {
+    try {
+      await prisma.user.create({
+        data: {
+          email: result.data?.email,
+          name: result.data?.name,
+          dob: result.data?.dob,
+          height: result.data?.height,
+          weight: result.data?.weight,
+        },
+      })
+      return encodedRedirect("success", "/sign-up", "Thanks for signing up! ")
+      // return redirect("/")
+    } catch (dbError) {
+      console.log(dbError)
+      // Optionally, you might want to delete the Supabase user if DB storage fails
+      await supabase.auth.admin.deleteUser(signUpData.user.id)
+      return encodedRedirect(
+        "error",
+        "/sign-up",
+        "Error creating user account. Please try again.",
+      )
+    }
   }
 }
 
-export const signInAction = async (data: z.infer<typeof zodUserSchema>) => {
-  const result = zodUserSchema.safeParse(data)
+export const signInAction = async (data: z.infer<typeof signUpUserSchema>) => {
+  const result = signUpUserSchema.safeParse(data)
 
   const email = result.data?.email as string
   const password = result.data?.password as string
@@ -57,36 +82,6 @@ export const signInAction = async (data: z.infer<typeof zodUserSchema>) => {
   }
 
   return redirect("/")
-}
-
-export const dummySignInAction = async (
-  data: z.infer<typeof zodUserSchema>,
-) => {
-  const result = zodUserSchema.safeParse(data)
-  console.log("Form data received:", result.success)
-  console.log("Form data parsed:", result.data)
-  // const email = formData.get("email") as string
-  // const password = formData.get("password") as string
-  // const supabase = createClient()
-
-  // // const { error } = await supabase.auth.signInWithOAuth({
-  // //   provider: "google",
-  // //   options: {
-  // //     redirectTo: `${origin}/auth/callback`,
-  // //   },
-  // // })
-  // const { error } = await supabase.auth.signInWithPassword({
-  //   email,
-  //   password,
-  // })
-  // if (error) {
-  //   return encodedRedirect("error", "/sign-in", error.message)
-  // }
-  // setTimeout(() => {
-  //   console.log("dummy")
-  // }, 2000)
-  // return redirect("/")
-  return "hello"
 }
 
 export const forgotPasswordAction = async (formData: FormData) => {

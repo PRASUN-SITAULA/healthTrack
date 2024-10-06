@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const zodUserSchema = z.object({
+export const signUpUserSchema = z.object({
   email: z
     .string({
       invalid_type_error: "Email must be a string.",
@@ -18,7 +18,7 @@ export const zodUserSchema = z.object({
     required_error: "Name is required.",
   }),
 
-  dateOfBirth: z
+  dob: z
     .date({
       invalid_type_error: "You must be at least 18 years old.",
     })

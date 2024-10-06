@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { zodUserSchema } from "@/config/zodUserSchema"
+import { signUpUserSchema } from "@/config/signUpUserSchema"
 import { format } from "date-fns"
 import { SubmitButton } from "@/components/submit-button"
 import { CalendarIcon } from "lucide-react"
@@ -37,8 +37,8 @@ import { Input } from "@/components/ui/input"
 import { signUpAction } from "@/app/actions"
 
 export function UserForm() {
-  const form = useForm<z.infer<typeof zodUserSchema>>({
-    resolver: zodResolver(zodUserSchema),
+  const form = useForm<z.infer<typeof signUpUserSchema>>({
+    resolver: zodResolver(signUpUserSchema),
   })
 
   const {
@@ -46,7 +46,7 @@ export function UserForm() {
     formState: { isSubmitting },
   } = form
 
-  async function onSubmit(data: z.infer<typeof zodUserSchema>) {
+  async function onSubmit(data: z.infer<typeof signUpUserSchema>) {
     const res = await signUpAction(data)
     console.log("form submitted successfully.")
   }
@@ -104,7 +104,7 @@ export function UserForm() {
         <div className="flex flex-row items-center justify-between gap-2">
           <FormField
             control={form.control}
-            name="dateOfBirth"
+            name="dob"
             render={({ field }) => (
               <FormItem className="flex w-full flex-col">
                 <FormLabel>Date of birth</FormLabel>
