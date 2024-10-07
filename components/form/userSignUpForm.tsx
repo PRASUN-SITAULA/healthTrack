@@ -34,7 +34,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
-import { signUpAction } from "@/app/actions"
 import { useToast } from "@/components/hooks/use-toast"
 import { signup } from "@/actions/auth"
 import { isActionError } from "@/utils/error"
@@ -53,7 +52,7 @@ export function UserForm() {
   } = form
 
   async function onSubmit(data: z.infer<typeof signUpUserSchema>) {
-    const res = await signup("hello", data)
+    const res = await signup(data)
     if (isActionError(res)) {
       toast({
         title: "Error",
@@ -232,7 +231,11 @@ export function UserForm() {
           />
         </div>
         <div className="flex w-full justify-center">
-          <SubmitButton type="submit" pending={isSubmitting}>
+          <SubmitButton
+            type="submit"
+            pending={isSubmitting}
+            pendingText="Signing up"
+          >
             Sign Up
           </SubmitButton>
         </div>

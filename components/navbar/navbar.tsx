@@ -3,14 +3,11 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Logo from "@/public/images/logo.png"
 import { ThemeSwitcher } from "@/components/theme-switcher"
-import { signOutAction } from "@/app/actions"
-import { createClient } from "@/utils/supabase/server"
+import { getUserAndSession } from "@/utils/auth/getUserSession"
+import { signout } from "@/actions/auth"
 
 export async function Navbar() {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { user, session } = await getUserAndSession()
   return (
     <nav className="justify-centerborder-b flex h-20 w-full border-b-foreground/10">
       <div className="mx-10 flex w-full items-center justify-center p-3 px-5 text-sm">
@@ -25,8 +22,8 @@ export async function Navbar() {
           <div className="flex items-center justify-center gap-8">
             {user ? (
               <>
-                <span>Welcome {user?.user_metadata?.name}</span>
-                <form action={signOutAction}>
+                <span>Welcome {user?.name}</span>
+                <form action={signout}>
                   <Button
                     size="sm"
                     variant={"outline"}

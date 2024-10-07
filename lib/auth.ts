@@ -18,6 +18,7 @@ export const lucia = new Lucia(adapter, {
     return {
       // we don't need to expose the password hash!
       email: attributes.email,
+      name: attributes.name,
     }
   },
 })
@@ -32,4 +33,5 @@ declare module "lucia" {
 
 interface DatabaseUserAttributes {
   email: string
+  name: string
 }

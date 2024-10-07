@@ -11,7 +11,7 @@ type Props = ComponentProps<typeof Button> & {
 export function SubmitButton({
   children,
   pending,
-  pendingText = "Signing Up",
+  pendingText,
   ...props
 }: Props) {
   return (
