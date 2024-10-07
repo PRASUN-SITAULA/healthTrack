@@ -38,15 +38,14 @@ export const signUpAction = async (data: z.infer<typeof signUpUserSchema>) => {
     try {
       await prisma.user.create({
         data: {
-          email: result.data?.email,
-          name: result.data?.name,
-          dob: result.data?.dob,
-          height: result.data?.height,
-          weight: result.data?.weight,
+          email: result.data?.email as string,
+          name: result.data?.name as string,
+          dob: result.data?.dob as Date,
+          height: result.data?.height as number,
+          weight: result.data?.weight as number,
         },
       })
-      return encodedRedirect("success", "/sign-up", "Thanks for signing up! ")
-      // return redirect("/")
+      // return encodedRedirect("success", "/", "Thanks for signing up! ")
     } catch (dbError) {
       console.log(dbError)
       // Optionally, you might want to delete the Supabase user if DB storage fails
@@ -56,6 +55,7 @@ export const signUpAction = async (data: z.infer<typeof signUpUserSchema>) => {
         "/sign-up",
         "Error creating user account. Please try again.",
       )
+      return redirect("/")
     }
   }
 }
