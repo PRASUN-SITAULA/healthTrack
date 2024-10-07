@@ -35,8 +35,14 @@ import {
 } from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
 import { signUpAction } from "@/app/actions"
+import { useToast } from "@/components/hooks/use-toast"
+import { signup } from "@/actions/auth"
+import { isActionError } from "@/utils/error"
+import { useRouter } from "next/navigation"
 
 export function UserForm() {
+  const router = useRouter()
+  const { toast } = useToast()
   const form = useForm<z.infer<typeof signUpUserSchema>>({
     resolver: zodResolver(signUpUserSchema),
   })
@@ -47,8 +53,21 @@ export function UserForm() {
   } = form
 
   async function onSubmit(data: z.infer<typeof signUpUserSchema>) {
-    const res = await signUpAction(data)
-    console.log("form submitted successfully.")
+    const res = await signup("hello", data)
+    if (isActionError(res)) {
+      toast({
+        title: "Error",
+        description: res.error,
+        variant: "destructive",
+      })
+    } else {
+      toast({
+        title: "Success",
+        description: res.success,
+        variant: "default",
+      })
+      router.push("/")
+    }
   }
 
   return (

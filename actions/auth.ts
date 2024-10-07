@@ -5,7 +5,6 @@ import { signUpUserSchema } from "@/config/signUpUserSchema"
 import { z } from "zod"
 import prisma from "@/lib/db"
 import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
 import { isValidEmail } from "@/utils/verifyEmail"
 
 export async function signup(_: any, data: z.infer<typeof signUpUserSchema>) {
@@ -53,8 +52,9 @@ export async function signup(_: any, data: z.infer<typeof signUpUserSchema>) {
       sessionCookie.value,
       sessionCookie.attributes,
     )
+    return { success: "User created successfully" }
   } catch (error) {
     console.log(error)
+    return { error: "Error creating user account. Please try again." }
   }
-  return redirect("/")
 }
