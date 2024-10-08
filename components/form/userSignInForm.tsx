@@ -31,7 +31,6 @@ export function UserSignInForm() {
   const {
     handleSubmit,
     formState: { isSubmitting },
-    reset,
   } = form
 
   async function onSubmit(data: z.infer<typeof signInUserSchema>) {
@@ -55,7 +54,7 @@ export function UserSignInForm() {
     } catch (error) {
       toast({
         title: "Error",
-        description: "An unexpected error occurred",
+        description: `An unexpected error occurred. ${error}`,
         variant: "destructive",
       })
     } finally {

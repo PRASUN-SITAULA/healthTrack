@@ -7,7 +7,7 @@ import { getUserAndSession } from "@/utils/auth/getUserSession"
 import { signout } from "@/actions/auth"
 
 export async function Navbar() {
-  const { user, session } = await getUserAndSession()
+  const { user } = await getUserAndSession()
   return (
     <nav className="justify-centerborder-b flex h-20 w-full border-b-foreground/10">
       <div className="mx-10 flex w-full items-center justify-center p-3 px-5 text-sm">
