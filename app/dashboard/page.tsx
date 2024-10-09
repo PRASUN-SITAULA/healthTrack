@@ -1,14 +1,10 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/cxs470I5b90
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
   CardFooter,
+  CardDescription,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
@@ -36,11 +32,23 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { healthTips } from "@/utils/healthTips"
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const healthTip = healthTips[Math.floor(Math.random() * healthTips.length)]
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40 py-8">
       <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+        {/* Display the random tip */}
+        <Card className="col-span-full">
+          <CardHeader>
+            <CardTitle>Health Tip of the day</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>{healthTip.tip}</p>
+            <CardDescription>{healthTip.description}</CardDescription>
+          </CardContent>
+        </Card>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -268,7 +276,7 @@ export default function Dashboard() {
   )
 }
 
-function ActivityIcon(props) {
+function ActivityIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -287,7 +295,7 @@ function ActivityIcon(props) {
   )
 }
 
-function FootprintsIcon(props) {
+function FootprintsIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -309,7 +317,7 @@ function FootprintsIcon(props) {
   )
 }
 
-function HeartIcon(props) {
+function HeartIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -328,7 +336,7 @@ function HeartIcon(props) {
   )
 }
 
-function MoonIcon(props) {
+function MoonIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -347,7 +355,7 @@ function MoonIcon(props) {
   )
 }
 
-function MoveVerticalIcon(props) {
+function MoveVerticalIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -368,7 +376,7 @@ function MoveVerticalIcon(props) {
   )
 }
 
-function PlusIcon(props) {
+function PlusIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -388,7 +396,7 @@ function PlusIcon(props) {
   )
 }
 
-function ScaleIcon(props) {
+function ScaleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
