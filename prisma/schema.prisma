@@ -15,8 +15,7 @@ model User{
     password String @db.VarChar(255)
     name String
     dob DateTime
-    height Float
-    weight Float
+
     sessions Session[]
 }
 
@@ -26,4 +25,23 @@ model Session {
   expiresAt DateTime
 
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model MeasuredMetrics{
+    userId String
+    steps Int
+    sleepMinutes Int
+    bloodPressureDiastolic Int
+    bloddPressureSystolic Int
+    createdAt DateTime @default(now())
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model InputMetrics{
+    userId String
+    height Float
+    weight Float
+    bloodGlucoseLevel Int
+    createdAt DateTime @default(now())
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
