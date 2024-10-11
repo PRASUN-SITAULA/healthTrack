@@ -35,7 +35,6 @@ export function UserSignInForm() {
 
   async function onSubmit(data: z.infer<typeof signInUserSchema>) {
     try {
-      console.log("I am clicked")
       const res = await signin(data)
       if (isActionError(res)) {
         toast({

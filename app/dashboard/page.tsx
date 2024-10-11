@@ -44,8 +44,14 @@ import {
   Plus,
 } from "lucide-react"
 import { EditHealthMetricDialog } from "@/components/edit-dialog"
+import { getUserAndSession } from "@/utils/auth/getUserSession"
+import { redirect } from "next/navigation"
 
 export default async function Dashboard() {
+  const { user } = await getUserAndSession()
+  if (!user) {
+    return redirect("/sign-in")
+  }
   const healthTip = healthTips[Math.floor(Math.random() * healthTips.length)]
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40 py-8">
@@ -116,7 +122,7 @@ export default async function Dashboard() {
                 <div className="text-4xl font-bold">165 kgs</div>
                 <p className="text-sm text-muted-foreground">Current weight</p>
               </div>
-              <EditHealthMetricDialog metric="weight" />
+              <EditHealthMetricDialog metric="weight" userId={user.id} />
             </CardContent>
           </Card>
           <Card>
@@ -129,7 +135,7 @@ export default async function Dashboard() {
                 <div className="text-4xl font-bold">200 Cm</div>
                 <p className="text-sm text-muted-foreground">Current Height</p>
               </div>
-              <EditHealthMetricDialog metric="height" />
+              <EditHealthMetricDialog metric="height" userId={user.id} />
             </CardContent>
           </Card>
 
@@ -147,7 +153,7 @@ export default async function Dashboard() {
                   Last Measured Blood Glucose
                 </p>
               </div>
-              <EditHealthMetricDialog metric="bloodGlucose" />
+              <EditHealthMetricDialog metric="bloodGlucose" userId={user.id} />
             </CardContent>
           </Card>
         </div>

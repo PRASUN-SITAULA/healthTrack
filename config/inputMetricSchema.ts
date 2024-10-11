@@ -23,3 +23,9 @@ export const bloodGlucoseSchema = z.object({
     })
     .nonnegative(),
 })
+
+export const inputMetricSchema = z.intersection(
+  heightSchema.required(),
+  weightSchema.required(),
+  bloodGlucoseSchema.required(),
+)

@@ -29,7 +29,8 @@ import { Button } from "@/components/ui/button"
 import { Pencil } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { SubmitButton } from "@/components/submit-button"
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { saveHealthMetric } from "@/actions/inputMetricsAction"
 
 // Function to get the appropriate schema
 function getSchemaForMetric(metric: "height" | "weight" | "bloodGlucose") {
@@ -43,10 +44,12 @@ function getSchemaForMetric(metric: "height" | "weight" | "bloodGlucose") {
   }
 }
 
-export function EditHealthMetricDialog({
+export async function EditHealthMetricDialog({
   metric,
+  userId,
 }: {
   metric: "height" | "weight" | "bloodGlucose"
+  userId: string
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const schema = getSchemaForMetric(metric)
@@ -54,7 +57,7 @@ export function EditHealthMetricDialog({
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      [metric]: 0,
+      [metric]: undefined,
     },
   })
 
@@ -67,6 +70,8 @@ export function EditHealthMetricDialog({
   async function onSubmit(data: z.infer<typeof schema>) {
     try {
       console.log("Form submitted", data)
+      const result = await saveHealthMetric(metric, data, userId)
+      console.log(result)
       // Your submission logic here
       setIsOpen(false)
     } catch (error) {

@@ -17,6 +17,7 @@ model User{
     dob DateTime
 
     sessions Session[]
+    inputmetrics InputMetrics?
 }
 
 model Session {
@@ -27,18 +28,9 @@ model Session {
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
-model MeasuredMetrics{
-    userId String
-    steps Int
-    sleepMinutes Int
-    bloodPressureDiastolic Int
-    bloddPressureSystolic Int
-    createdAt DateTime @default(now())
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
 model InputMetrics{
-    userId String
+    id String @id @default(uuid())
+    userId String @unique
     height Float
     weight Float
     bloodGlucoseLevel Int
