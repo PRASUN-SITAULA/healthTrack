@@ -40,21 +40,28 @@ import {
   Heart,
   Activity,
   Footprints,
-  PersonStanding,
   Plus,
+  PersonStanding,
 } from "lucide-react"
 import { EditHealthMetricDialog } from "@/components/edit-dialog"
 import { getUserAndSession } from "@/utils/auth/getUserSession"
 import { redirect } from "next/navigation"
+import { getHealthMetric } from "@/actions/inputMetricsAction"
+import { ErrorHandler } from "@/components/error-handler"
 
 export default async function Dashboard() {
   const { user } = await getUserAndSession()
   if (!user) {
     return redirect("/sign-in")
   }
+  const healthMetricsData = await getHealthMetric(user.id)
+
   const healthTip = healthTips[Math.floor(Math.random() * healthTips.length)]
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40 py-8">
+      {healthMetricsData.error && (
+        <ErrorHandler error={healthMetricsData.error} />
+      )}
       <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
         <Card className="col-span-full">
           <CardHeader>
@@ -119,7 +126,9 @@ export default async function Dashboard() {
 
             <CardContent className="flex flex-row justify-between pr-3">
               <div>
-                <div className="text-4xl font-bold">165 kgs</div>
+                <div className="text-4xl font-bold">
+                  {healthMetricsData.data?.weight} kgs
+                </div>
                 <p className="text-sm text-muted-foreground">Current weight</p>
               </div>
               <EditHealthMetricDialog metric="weight" userId={user.id} />
@@ -128,11 +137,13 @@ export default async function Dashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium">Height</CardTitle>
-              <MoveVertical className="h-4 w-4 text-muted-foreground" />
+              <PersonStanding className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent className="flex flex-row justify-between pr-3">
               <div>
-                <div className="text-4xl font-bold">200 Cm</div>
+                <div className="text-4xl font-bold">
+                  {healthMetricsData.data?.height} cm
+                </div>
                 <p className="text-sm text-muted-foreground">Current Height</p>
               </div>
               <EditHealthMetricDialog metric="height" userId={user.id} />
@@ -148,7 +159,9 @@ export default async function Dashboard() {
             </CardHeader>
             <CardContent className="flex flex-row justify-between pr-3">
               <div>
-                <div className="text-4xl font-bold">120 mg/dL</div>
+                <div className="text-4xl font-bold">
+                  {healthMetricsData.data?.bloodGlucoseLevel} mg/dL
+                </div>
                 <p className="text-sm text-muted-foreground">
                   Last Measured Blood Glucose
                 </p>

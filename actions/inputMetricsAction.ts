@@ -2,6 +2,7 @@
 import { z } from "zod"
 import prisma from "@/lib/db"
 import { inputMetricSchema } from "@/config/inputMetricSchema"
+import { cache } from "react"
 
 export async function saveHealthMetric(
   data: z.infer<typeof inputMetricSchema>,
@@ -12,10 +13,6 @@ export async function saveHealthMetric(
     if (!result.success) {
       return { error: "Please enter valid value." }
     }
-    const weight = result?.data?.weight
-    const height = result?.data?.height
-    const bloodGlucoseLevel = result?.data?.bloodGlucoseLevel
-
     const inputMetrics = await prisma.inputMetrics.create({
       data: {
         height: result?.data?.height,
@@ -32,3 +29,22 @@ export async function saveHealthMetric(
     return { error: "Failed to save health metric" }
   }
 }
+
+export const getHealthMetric = cache(async (userId: string) => {
+  try {
+    const data = await prisma.inputMetrics.findUnique({
+      where: {
+        userId: userId,
+      },
+      select: {
+        weight: true,
+        height: true,
+        bloodGlucoseLevel: true,
+      },
+    })
+    return { sucess: "Data fetched", data: data }
+  } catch (error) {
+    console.error("Failed to get data", error)
+    return { error: "Something wrong happened. Please try again." }
+  }
+})
