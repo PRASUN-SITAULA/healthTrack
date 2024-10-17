@@ -17,15 +17,30 @@ export const weightSchema = z.object({
 })
 
 export const bloodGlucoseSchema = z.object({
-  bloodGlucose: z
+  bloodGlucoseLevel: z
     .number({
       invalid_type_error: "Blood Glucose must be a positive number.",
     })
     .nonnegative(),
 })
 
-export const inputMetricSchema = z.intersection(
-  heightSchema.required(),
-  weightSchema.required(),
-  bloodGlucoseSchema.required(),
-)
+export const inputMetricSchema = z.object({
+  weight: z
+    .number({
+      invalid_type_error: "Enter a valid value.",
+      required_error: "A value is required.",
+    })
+    .nonnegative(),
+  height: z
+    .number({
+      invalid_type_error: "Enter a valid value.",
+      required_error: "A value is required.",
+    })
+    .nonnegative(),
+  bloodGlucoseLevel: z
+    .number({
+      invalid_type_error: "Enter a valid value.",
+      required_error: "A value is required.",
+    })
+    .nonnegative(),
+})

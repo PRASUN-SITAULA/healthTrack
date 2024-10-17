@@ -27,16 +27,4 @@ export const signUpUserSchema = z.object({
     invalid_type_error: "Gender must be one of male, female, or other.",
     required_error: "One option must be selected.",
   }),
-  height: z
-    .number({
-      invalid_type_error: "Height must be a positive number.",
-      required_error: "Height is required.",
-    })
-    .nonnegative(),
-  weight: z
-    .number({
-      invalid_type_error: "Weight must be a positive number.",
-      required_error: "Weight is required.",
-    })
-    .nonnegative(),
 })

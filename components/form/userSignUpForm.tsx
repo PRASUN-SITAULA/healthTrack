@@ -65,7 +65,7 @@ export function UserForm() {
         description: res.success,
         variant: "default",
       })
-      router.push("/")
+      router.push("/health-data-entry/callback")
     }
   }
 
@@ -80,6 +80,7 @@ export function UserForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <Input
+                  autoComplete="off"
                   placeholder="Enter your Email"
                   className="input input-bordered"
                   {...field}
@@ -95,6 +96,7 @@ export function UserForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <Input
+                  autoComplete="off"
                   placeholder="Enter your password"
                   className="input input-bordered"
                   {...field}
@@ -111,6 +113,7 @@ export function UserForm() {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <Input
+                autoComplete="off"
                 placeholder="Enter your name"
                 className="input input-bordered"
                 {...field}
@@ -188,48 +191,6 @@ export function UserForm() {
           />
         </div>
 
-        <div className="flex items-center justify-center gap-2">
-          <FormField
-            control={form.control}
-            name="height"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Height(CM)</FormLabel>
-                <Input
-                  placeholder="Enter your height"
-                  className="input input-bordered"
-                  {...field}
-                  onChange={(e) => {
-                    const value =
-                      e.target.value === "" ? undefined : Number(e.target.value)
-                    field.onChange(value)
-                  }}
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="weight"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Weight(KG)</FormLabel>
-                <Input
-                  placeholder="Enter your weight"
-                  className="input input-bordered"
-                  {...field}
-                  onChange={(e) => {
-                    const value =
-                      e.target.value === "" ? undefined : Number(e.target.value)
-                    field.onChange(value)
-                  }}
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
         <div className="flex w-full justify-center">
           <SubmitButton
             type="submit"

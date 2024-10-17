@@ -20,13 +20,19 @@ import { signin } from "@/actions/auth"
 import { isActionError } from "@/utils/error"
 import { useRouter } from "next/navigation"
 import { inputMetricSchema } from "@/config/inputMetricSchema"
+import { saveHealthMetric } from "@/actions/inputMetricsAction"
 
-export function InitialInputMetricsForm() {
+export function InitialInputMetricsForm({ userId }: { userId: string }) {
   const router = useRouter()
   const { toast } = useToast()
 
   const form = useForm<z.infer<typeof inputMetricSchema>>({
     resolver: zodResolver(inputMetricSchema),
+    defaultValues: {
+      weight: 0,
+      height: 0,
+      bloodGlucoseLevel: 0,
+    },
   })
 
   const {
@@ -36,8 +42,7 @@ export function InitialInputMetricsForm() {
 
   async function onSubmit(data: z.infer<typeof inputMetricSchema>) {
     try {
-      // const res = await signin(data)
-      const res = "hello"
+      const res = await saveHealthMetric(data, userId)
       if (isActionError(res)) {
         toast({
           title: "Error",
@@ -78,6 +83,7 @@ export function InitialInputMetricsForm() {
                     <Input
                       placeholder="Enter your current Weight"
                       className="input input-bordered"
+                      autoComplete="off"
                       {...field}
                       onChange={(e) => {
                         const value =
@@ -102,6 +108,7 @@ export function InitialInputMetricsForm() {
                     <Input
                       placeholder="Enter your current Height"
                       className="input input-bordered"
+                      autoComplete="off"
                       {...field}
                       onChange={(e) => {
                         const value =
@@ -118,7 +125,7 @@ export function InitialInputMetricsForm() {
             />
             <FormField
               control={form.control}
-              name="bloodGlucose"
+              name="bloodGlucoseLevel"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Blood Glucose</FormLabel>
@@ -126,6 +133,7 @@ export function InitialInputMetricsForm() {
                     <Input
                       placeholder="Enter your Latest measured Blood Glucose"
                       className="input input-bordered"
+                      autoComplete="off"
                       {...field}
                       onChange={(e) => {
                         const value =

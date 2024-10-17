@@ -45,8 +45,6 @@ export async function signup(data: z.infer<typeof signUpUserSchema>) {
         password: hashedPassword as string,
         name: result.data?.name as string,
         dob: result.data?.dob as Date,
-        height: result.data?.height as number,
-        weight: result.data?.weight as number,
       },
     })
     const session = await lucia.createSession(user.id, {})
