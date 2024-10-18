@@ -30,24 +30,10 @@ import { Pencil } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { SubmitButton } from "@/components/submit-button"
 import { useState } from "react"
-import {
-  saveHealthMetric,
-  updateHealthMetric,
-} from "@/actions/inputMetricsAction"
+import { updateHealthMetric } from "@/actions/inputMetricsAction"
 import { useToast } from "@/components/hooks/use-toast"
 import { isActionError } from "@/utils/error"
 
-// Function to get the appropriate schema
-function getSchemaForMetric(metric: "height" | "weight" | "bloodGlucose") {
-  switch (metric) {
-    case "height":
-      return heightSchema
-    case "weight":
-      return weightSchema
-    case "bloodGlucose":
-      return bloodGlucoseSchema
-  }
-}
 const metricSchema = z.union([heightSchema, weightSchema, bloodGlucoseSchema])
 
 export function EditHealthMetricDialog({
@@ -75,7 +61,6 @@ export function EditHealthMetricDialog({
 
   async function onSubmit(data: z.infer<typeof metricSchema>) {
     try {
-      console.log("Form submitted", data)
       const res = await updateHealthMetric(metric, data, userId)
       if (isActionError(res)) {
         toast({
@@ -89,6 +74,7 @@ export function EditHealthMetricDialog({
           description: res.success,
           variant: "default",
         })
+        reset()
       }
       setIsOpen(false)
     } catch (error) {

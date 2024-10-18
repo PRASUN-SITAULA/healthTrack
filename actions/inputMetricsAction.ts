@@ -46,6 +46,7 @@ export const getHealthMetric = cache(async (userId: string) => {
         weight: true,
         height: true,
         bloodGlucoseLevel: true,
+        createdAt: true,
       },
     })
     return { sucess: "Data fetched", data: data }

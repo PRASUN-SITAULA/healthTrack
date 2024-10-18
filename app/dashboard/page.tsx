@@ -118,12 +118,15 @@ export default async function Dashboard() {
             </CardContent>
           </Card>
           <div className="col-span-full h-px bg-border" />
+          <p className="text-md col-span-full mb-2 mt-2 text-muted-foreground">
+            Latest Data as of{" "}
+            {healthMetricsData.data?.createdAt.toLocaleDateString()}
+          </p>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium">Weight</CardTitle>
               <Scale className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-
             <CardContent className="flex flex-row justify-between pr-3">
               <div>
                 <div className="text-4xl font-bold">
@@ -149,7 +152,6 @@ export default async function Dashboard() {
               <EditHealthMetricDialog metric="height" userId={user.id} />
             </CardContent>
           </Card>
-
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium">
