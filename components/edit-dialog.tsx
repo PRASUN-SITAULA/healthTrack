@@ -30,7 +30,12 @@ import { Pencil } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { SubmitButton } from "@/components/submit-button"
 import { useState } from "react"
-import { saveHealthMetric } from "@/actions/inputMetricsAction"
+import {
+  saveHealthMetric,
+  updateHealthMetric,
+} from "@/actions/inputMetricsAction"
+import { useToast } from "@/components/hooks/use-toast"
+import { isActionError } from "@/utils/error"
 
 // Function to get the appropriate schema
 function getSchemaForMetric(metric: "height" | "weight" | "bloodGlucose") {
@@ -43,19 +48,20 @@ function getSchemaForMetric(metric: "height" | "weight" | "bloodGlucose") {
       return bloodGlucoseSchema
   }
 }
+const metricSchema = z.union([heightSchema, weightSchema, bloodGlucoseSchema])
 
-export async function EditHealthMetricDialog({
+export function EditHealthMetricDialog({
   metric,
   userId,
 }: {
-  metric: "height" | "weight" | "bloodGlucose"
+  metric: "height" | "weight" | "bloodGlucoseLevel"
   userId: string
 }) {
+  const { toast } = useToast()
   const [isOpen, setIsOpen] = useState(false)
-  const schema = getSchemaForMetric(metric)
 
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const form = useForm<z.infer<typeof metricSchema>>({
+    resolver: zodResolver(metricSchema),
     defaultValues: {
       [metric]: undefined,
     },
@@ -67,15 +73,31 @@ export async function EditHealthMetricDialog({
     reset,
   } = form
 
-  async function onSubmit(data: z.infer<typeof schema>) {
+  async function onSubmit(data: z.infer<typeof metricSchema>) {
     try {
       console.log("Form submitted", data)
-      const result = await saveHealthMetric(metric, data, userId)
-      console.log(result)
-      // Your submission logic here
+      const res = await updateHealthMetric(metric, data, userId)
+      if (isActionError(res)) {
+        toast({
+          title: "Error",
+          description: res.error,
+          variant: "destructive",
+        })
+      } else {
+        toast({
+          title: "Success",
+          description: res.success,
+          variant: "default",
+        })
+      }
       setIsOpen(false)
     } catch (error) {
       console.error("Submission error:", error)
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        variant: "destructive",
+      })
     }
   }
 
@@ -103,7 +125,7 @@ export async function EditHealthMetricDialog({
                   <FormLabel>
                     {metric === "height"
                       ? "Height"
-                      : metric === "bloodGlucose"
+                      : metric === "bloodGlucoseLevel"
                         ? "Blood Glucose"
                         : "Weight"}
                   </FormLabel>

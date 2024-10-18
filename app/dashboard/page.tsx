@@ -166,7 +166,10 @@ export default async function Dashboard() {
                   Last Measured Blood Glucose
                 </p>
               </div>
-              <EditHealthMetricDialog metric="bloodGlucose" userId={user.id} />
+              <EditHealthMetricDialog
+                metric="bloodGlucoseLevel"
+                userId={user.id}
+              />
             </CardContent>
           </Card>
         </div>
