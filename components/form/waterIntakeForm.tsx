@@ -15,31 +15,56 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { SubmitButton } from "@/components/submit-button"
-
-const formSchema = z.object({
-  amount: z
-    .number({
-      required_error: "Please enter an amount",
-    })
-    .min(1, "Amount must be at least 1 ml")
-    .max(2000, "Amount cannot exceed 2000 ml"),
-})
+import { waterIntakeSchema } from "@/config/waterIntakeSchema"
+import { updateWaterIntake } from "@/actions/waterIntakeAction"
+import { isActionError } from "@/utils/error"
+import { useToast } from "@/components/hooks/use-toast"
 
 export default function WaterIntakeTracker() {
+  const { toast } = useToast()
   const [waterIntake, setWaterIntake] = useState(0)
   const dailyGoal = 2000 // 2 liters in ml
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof waterIntakeSchema>>({
+    resolver: zodResolver(waterIntakeSchema),
     defaultValues: {
       amount: undefined,
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof waterIntakeSchema>) {
+    const result = waterIntakeSchema.safeParse(values)
+    if (!result.success) {
+      return
+    }
+    const amount = result.data.amount
     const newIntake = Math.min(waterIntake + values.amount, dailyGoal)
     setWaterIntake(newIntake)
-    form.reset()
+
+    try {
+      const res = await updateWaterIntake(amount, userId)
+      if (isActionError(res)) {
+        toast({
+          title: "Error",
+          description: res.error,
+          variant: "destructive",
+        })
+      } else {
+        toast({
+          title: "Success",
+          description: res.success,
+          variant: "default",
+        })
+        form.reset()
+      }
+    } catch (error) {
+      console.error("Submission error:", error)
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        variant: "destructive",
+      })
+    }
   }
 
   const progress = Math.min((waterIntake / dailyGoal) * 100, 100)
@@ -68,7 +93,9 @@ export default function WaterIntakeTracker() {
                         onChange={(e) => field.onChange(e.target.valueAsNumber)}
                         className="flex-grow"
                       />
-                      <SubmitButton type="submit">Add</SubmitButton>
+                      <SubmitButton type="submit" pendingText="Adding">
+                        Add
+                      </SubmitButton>
                     </div>
                   </FormControl>
                   <FormMessage />

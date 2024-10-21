@@ -1,23 +1,23 @@
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
-model User{
-    id String @id @default(uuid())
-    email String @unique @db.VarChar(255)
-    password String @db.VarChar(255)
-    name String
-    dob DateTime
+model User {
+  id       String   @id @default(uuid())
+  email    String   @unique @db.VarChar(255)
+  password String   @db.VarChar(255)
+  name     String
+  dob      DateTime
 
-    sessions Session[]
-    inputmetrics InputMetrics?
+  sessions     Session[]
+  inputmetrics InputMetrics?
+  waterintake  WaterIntake?
 }
 
 model Session {
@@ -25,15 +25,23 @@ model Session {
   userId    String
   expiresAt DateTime
 
-  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
-model InputMetrics{
-    id String @id @default(uuid())
-    userId String @unique
-    height Float
-    weight Float
-    bloodGlucoseLevel Int
-    createdAt DateTime @default(now())
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+model InputMetrics {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  height            Float
+  weight            Float
+  bloodGlucoseLevel Int
+  createdAt         DateTime @default(now())
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WaterIntake {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  amount    Int      @default(0)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
