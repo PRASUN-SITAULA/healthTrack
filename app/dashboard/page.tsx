@@ -48,6 +48,7 @@ import { getUserAndSession } from "@/utils/auth/getUserSession"
 import { redirect } from "next/navigation"
 import { getHealthMetric } from "@/actions/inputMetricsAction"
 import { ErrorHandler } from "@/components/error-handler"
+import WaterIntakeTracker from "@/components/form/waterIntakeForm"
 
 export default async function Dashboard() {
   const { user } = await getUserAndSession()
@@ -72,6 +73,7 @@ export default async function Dashboard() {
             <CardDescription>{healthTip.description}</CardDescription>
           </CardContent>
         </Card>
+        <WaterIntakeTracker />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
