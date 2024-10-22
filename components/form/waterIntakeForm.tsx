@@ -20,9 +20,15 @@ import { updateWaterIntake } from "@/actions/waterIntakeAction"
 import { isActionError } from "@/utils/error"
 import { useToast } from "@/components/hooks/use-toast"
 
-export default function WaterIntakeTracker() {
+export default function WaterIntakeTracker({
+  userId,
+  waterIntakeAmount,
+}: {
+  userId: string
+  waterIntakeAmount: number
+}) {
   const { toast } = useToast()
-  const [waterIntake, setWaterIntake] = useState(0)
+  const [waterIntake, setWaterIntake] = useState(waterIntakeAmount)
   const dailyGoal = 2000 // 2 liters in ml
 
   const form = useForm<z.infer<typeof waterIntakeSchema>>({
@@ -50,11 +56,6 @@ export default function WaterIntakeTracker() {
           variant: "destructive",
         })
       } else {
-        toast({
-          title: "Success",
-          description: res.success,
-          variant: "default",
-        })
         form.reset()
       }
     } catch (error) {
