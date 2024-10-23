@@ -13,8 +13,27 @@ export const getWaterIntake = cache(async (userId: string) => {
       select: {
         amount: true,
         createdAt: true,
+        updatedAt: true,
       },
     })
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    if (!waterIntakeAmount || waterIntakeAmount?.updatedAt < today) {
+      await prisma.waterIntake.update({
+        where: {
+          userId: userId,
+        },
+        data: {
+          amount: 0,
+        },
+      })
+      return {
+        success: "New day started, water intake reset",
+        waterIntake: 0,
+      }
+    }
+
     return {
       success: "Data retrieved successfully",
       waterIntake: waterIntakeAmount ? waterIntakeAmount.amount : 0,
@@ -26,6 +45,7 @@ export const getWaterIntake = cache(async (userId: string) => {
 })
 
 export const updateWaterIntake = async (amount: number, userId: string) => {
+  const today = new Date()
   try {
     await prisma.waterIntake.upsert({
       where: {

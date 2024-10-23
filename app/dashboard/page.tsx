@@ -128,8 +128,7 @@ export default async function Dashboard() {
           </Card>
           <div className="col-span-full h-px bg-border" />
           <p className="text-md col-span-full mb-2 mt-2 text-muted-foreground">
-            Latest Data as of{" "}
-            {healthMetricsData.data?.createdAt.toLocaleDateString()}
+            Latest Data as of {healthMetricsData.data?.updatedAt.toDateString()}
           </p>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
