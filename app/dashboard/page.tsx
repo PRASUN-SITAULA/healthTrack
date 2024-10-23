@@ -42,6 +42,7 @@ import {
   Footprints,
   Plus,
   PersonStanding,
+  Gauge,
 } from "lucide-react"
 import { EditHealthMetricDialog } from "@/components/edit-dialog"
 import { getUserAndSession } from "@/utils/auth/getUserSession"
@@ -50,6 +51,7 @@ import { getHealthMetric } from "@/actions/inputMetricsAction"
 import { ErrorHandler } from "@/components/error-handler"
 import WaterIntakeTracker from "@/components/form/waterIntakeForm"
 import { getWaterIntake } from "@/actions/waterIntakeAction"
+import { calculateBMI } from "@/utils/healthCalculations"
 
 export default async function Dashboard() {
   const { user } = await getUserAndSession()
@@ -60,6 +62,13 @@ export default async function Dashboard() {
   const waterIntake = await getWaterIntake(user.id)
   if (!waterIntake.success) {
     return
+  }
+  let bmi = 0
+  if (healthMetricsData.data?.height && healthMetricsData.data?.weight) {
+    bmi = calculateBMI(
+      healthMetricsData.data?.height,
+      healthMetricsData.data?.weight,
+    )
   }
   const healthTip = healthTips[Math.floor(Math.random() * healthTips.length)]
   return (
@@ -180,6 +189,18 @@ export default async function Dashboard() {
                 metric="bloodGlucoseLevel"
                 userId={user.id}
               />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-sm font-medium">BMI</CardTitle>
+              <Gauge className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent className="flex flex-row justify-between pr-3">
+              <div>
+                <div className="text-4xl font-bold">{bmi}</div>
+                <p className="text-sm text-muted-foreground">Body Mass Index</p>
+              </div>
             </CardContent>
           </Card>
         </div>
