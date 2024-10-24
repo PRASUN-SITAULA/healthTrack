@@ -4,7 +4,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "eslint --fix --ext ts,tsx .",
+    "format": "prettier --write .{ts,tsx,md,json}"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
