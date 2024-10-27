@@ -1,4 +1,4 @@
-import { Lucia } from "lucia"
+import { Lucia, TimeSpan } from "lucia"
 import prisma from "@/lib/db"
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma"
 

@@ -20,7 +20,7 @@ import { isActionError } from "@/utils/error"
 import { useRouter } from "next/navigation"
 import { signInUserSchema } from "@/config/signInUserSchema"
 
-export function UserSignInForm() {
+export default function UserSignInForm() {
   const router = useRouter()
   const { toast } = useToast()
 
@@ -31,6 +31,7 @@ export function UserSignInForm() {
   const {
     handleSubmit,
     formState: { isSubmitting },
+    reset,
   } = form
 
   async function onSubmit(data: z.infer<typeof signInUserSchema>) {
@@ -57,7 +58,7 @@ export function UserSignInForm() {
         variant: "destructive",
       })
     } finally {
-      // setTimeout(() => reset(), 100) // Reset the form state after submission attempt
+      setTimeout(() => reset(), 100) // Reset the form state after submission attempt
     }
   }
 
