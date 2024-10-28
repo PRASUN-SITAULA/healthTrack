@@ -49,7 +49,7 @@ export default function UserSignInForm() {
           description: res.success,
           variant: "default",
         })
-        router.push("/")
+        router.push("/dashboard")
       }
     } catch (error) {
       toast({
