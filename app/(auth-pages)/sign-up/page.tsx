@@ -1,4 +1,4 @@
-import { UserForm } from "@/components/form/userSignUpForm"
+import { UserSignUpForm } from "@/components/form/userSignUpForm"
 import Link from "next/link"
 import { FormMessage, Message } from "@/components/form-message"
 
@@ -16,7 +16,7 @@ export default function RegisterPage({
           Sign in
         </Link>
       </p>
-      <UserForm />
+      <UserSignUpForm />
       <FormMessage message={searchParams} />
     </div>
   )

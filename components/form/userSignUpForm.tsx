@@ -33,17 +33,25 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import DatePicker from "@/components/date-picker"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/hooks/use-toast"
 import { signup } from "@/actions/auth"
 import { isActionError } from "@/utils/error"
 import { useRouter } from "next/navigation"
 
-export function UserForm() {
+export function UserSignUpForm() {
   const router = useRouter()
   const { toast } = useToast()
   const form = useForm<z.infer<typeof signUpUserSchema>>({
     resolver: zodResolver(signUpUserSchema),
+    defaultValues: {
+      dob: new Date("1930-01-01"),
+      name: "",
+      email: "",
+      password: "",
+      gender: "male",
+    },
   })
 
   const {
@@ -106,60 +114,19 @@ export function UserForm() {
             )}
           />
         </div>
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <Input
-                autoComplete="off"
-                placeholder="Enter your name"
-                className="input input-bordered"
-                {...field}
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex flex-row items-center justify-between gap-2">
+        <div className="flex items-center justify-between gap-2">
           <FormField
             control={form.control}
-            name="dob"
+            name="name"
             render={({ field }) => (
               <FormItem className="flex w-full flex-col">
-                <FormLabel>Date of birth</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground",
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                <FormLabel>Name</FormLabel>
+                <Input
+                  autoComplete="off"
+                  placeholder="Enter your name"
+                  className="input input-bordered"
+                  {...field}
+                />
                 <FormMessage />
               </FormItem>
             )}
@@ -190,6 +157,54 @@ export function UserForm() {
             )}
           />
         </div>
+
+        <FormField
+          control={form.control}
+          name="dob"
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col">
+              <FormLabel>Date of birth</FormLabel>
+              <DatePicker
+                startYear={1930}
+                endYear={2006}
+                selected={field.value}
+                onSelect={field.onChange}
+              />
+              {/* <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) =>
+                      date > new Date() || date < new Date("1900-01-01")
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover> */}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <div className="flex w-full justify-center">
           <SubmitButton

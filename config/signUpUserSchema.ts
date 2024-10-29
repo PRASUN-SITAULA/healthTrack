@@ -22,7 +22,7 @@ export const signUpUserSchema = z.object({
     .date({
       invalid_type_error: "You must be at least 18 years old.",
     })
-    .min(new Date("2006-11-04")),
+    .max(new Date("2006-11-04")),
   gender: z.enum(["male", "female", "other"], {
     invalid_type_error: "Gender must be one of male, female, or other.",
     required_error: "One option must be selected.",
