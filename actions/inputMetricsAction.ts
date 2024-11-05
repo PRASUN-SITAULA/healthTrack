@@ -146,3 +146,22 @@ export const saveWalkingSteps = async (steps: number, userId: string) => {
     return { error: "Failed to save walking steps" }
   }
 }
+
+export const getStepsAndSleep = async (userId: string) => {
+  try {
+    const steps = await prisma.walkingSteps.findMany({
+      where: {
+        userId: userId,
+      },
+    })
+    const sleep = await prisma.sleepDuration.findMany({
+      where: {
+        userId: userId,
+      },
+    })
+    return { success: "Data fetched successfully", data: { steps, sleep } }
+  } catch (error) {
+    console.error("Failed to get data", error)
+    return { error: "Something wrong happened. Please try again." }
+  }
+}

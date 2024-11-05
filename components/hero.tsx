@@ -2,8 +2,14 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Heart, Activity, Utensils, Moon } from "lucide-react"
+import { getUserAndSession } from "@/utils/auth/getUserSession"
+import { redirect } from "next/navigation"
 
-export default function Home() {
+export default async function Home() {
+  const { user, session } = await getUserAndSession()
+  if (session) {
+    redirect("/dashboard")
+  }
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
