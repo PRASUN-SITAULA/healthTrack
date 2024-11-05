@@ -1,4 +1,4 @@
-import { UserSignUpForm } from "@/components/form/userSignUpForm"
+import UserSignUpForm from "@/components/form/userSignUpForm"
 import Link from "next/link"
 import { FormMessage, Message } from "@/components/form-message"
 

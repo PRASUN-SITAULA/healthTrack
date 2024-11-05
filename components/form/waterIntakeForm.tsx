@@ -71,7 +71,7 @@ export default function WaterIntakeTracker({
   const progress = Math.min((waterIntake / dailyGoal) * 100, 100)
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md border-2 border-blue-200 dark:border-slate-800">
       <CardHeader>
         <CardTitle className="text-center text-2xl font-bold">
           Water Intake Tracker

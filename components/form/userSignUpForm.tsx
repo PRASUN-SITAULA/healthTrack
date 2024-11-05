@@ -40,7 +40,7 @@ import { signup } from "@/actions/auth"
 import { isActionError } from "@/utils/error"
 import { useRouter } from "next/navigation"
 
-export function UserSignUpForm() {
+export default function UserSignUpForm() {
   const router = useRouter()
   const { toast } = useToast()
   const form = useForm<z.infer<typeof signUpUserSchema>>({

@@ -52,6 +52,7 @@ import { ErrorHandler } from "@/components/error-handler"
 import WaterIntakeTracker from "@/components/form/waterIntakeForm"
 import { getWaterIntake } from "@/actions/waterIntakeAction"
 import { calculateBMI } from "@/utils/healthCalculations"
+import SleepDurationTracker from "@/components/form/sleepDurationForm"
 
 export default async function Dashboard() {
   const { user } = await getUserAndSession()
@@ -77,7 +78,7 @@ export default async function Dashboard() {
         <ErrorHandler error={healthMetricsData.error} />
       )}
       <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-        <Card className="col-span-full">
+        <Card className="col-span-full border-2 border-blue-200 dark:border-slate-800">
           <CardHeader>
             <CardTitle>Health Tip of the day</CardTitle>
           </CardHeader>
@@ -86,12 +87,22 @@ export default async function Dashboard() {
             <CardDescription>{healthTip.description}</CardDescription>
           </CardContent>
         </Card>
-        <WaterIntakeTracker
-          userId={user.id}
-          waterIntakeAmount={waterIntake.waterIntake}
-        />
+        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <WaterIntakeTracker
+            userId={user.id}
+            waterIntakeAmount={waterIntake.waterIntake}
+          />
+          <Card className="flex h-fit flex-col justify-center border-2 border-blue-200 dark:border-slate-800">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-2xl font-bold">
+                Add Sleep Duration
+              </CardTitle>
+              <SleepDurationTracker userId={user.id} />
+            </CardHeader>
+          </Card>
+        </section>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          <Card>
+          <Card className="border-2 border-blue-200 dark:border-slate-800">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Heart Rate</CardTitle>
               <Heart className="h-4 w-4 text-muted-foreground" />
@@ -101,7 +112,7 @@ export default async function Dashboard() {
               <p className="text-xs text-muted-foreground">Average for today</p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-2 border-blue-200 dark:border-slate-800">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">
                 Blood Pressure
@@ -113,7 +124,7 @@ export default async function Dashboard() {
               <p className="text-xs text-muted-foreground">Average for today</p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-2 border-blue-200 dark:border-slate-800">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Steps</CardTitle>
               <Footprints className="h-4 w-4 text-muted-foreground" />
@@ -123,7 +134,7 @@ export default async function Dashboard() {
               <p className="text-xs text-muted-foreground">Total for today</p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-2 border-blue-200 dark:border-slate-800">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Sleep</CardTitle>
               <Moon className="h-4 w-4 text-muted-foreground" />
@@ -139,7 +150,7 @@ export default async function Dashboard() {
           <p className="text-md col-span-full mb-2 mt-2 text-muted-foreground">
             Latest Data as of {healthMetricsData.data?.updatedAt.toDateString()}
           </p>
-          <Card>
+          <Card className="border-2 border-blue-200 dark:border-slate-800">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium">Weight</CardTitle>
               <Scale className="h-4 w-4 text-muted-foreground" />
@@ -154,7 +165,7 @@ export default async function Dashboard() {
               <EditHealthMetricDialog metric="weight" userId={user.id} />
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-2 border-blue-200 dark:border-slate-800">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium">Height</CardTitle>
               <PersonStanding className="h-4 w-4 text-muted-foreground" />
@@ -169,7 +180,7 @@ export default async function Dashboard() {
               <EditHealthMetricDialog metric="height" userId={user.id} />
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-2 border-blue-200 dark:border-slate-800">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium">
                 Blood Glucose
@@ -191,7 +202,7 @@ export default async function Dashboard() {
               />
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-2 border-blue-200 dark:border-slate-800">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium">BMI</CardTitle>
               <Gauge className="h-4 w-4 text-muted-foreground" />
@@ -205,7 +216,7 @@ export default async function Dashboard() {
           </Card>
         </div>
 
-        <Card className="w-full">
+        <Card className="w-full border-2 border-blue-200 dark:border-slate-800">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Health Log</CardTitle>
             <Dialog>

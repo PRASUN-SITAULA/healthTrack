@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { UserSignInForm } from "@/components/form/userSignInForm"
+import UserSignInForm from "@/components/form/userSignInForm"
 
 export default function Login() {
   return (

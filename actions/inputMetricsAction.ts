@@ -9,6 +9,7 @@ import {
 } from "@/config/inputMetricSchema"
 import { cache } from "react"
 import { revalidatePath } from "next/cache"
+import { sleepDurationSchema } from "@/config/sleepDurationSchema"
 
 export async function saveHealthMetric(
   data: z.infer<typeof inputMetricSchema>,
@@ -109,5 +110,22 @@ export const updateHealthMetric = async (
   } catch (error) {
     console.error("Failed to update health metric", error)
     return { error: "Failed to update health metric" }
+  }
+}
+
+export const saveSleepDuration = async (duration: number, userId: string) => {
+  try {
+    const inputMetrics = await prisma.sleepDuration.create({
+      data: {
+        sleepduration: duration,
+        user: {
+          connect: { id: userId },
+        },
+      },
+    })
+    return { success: "Data added Successfully.", data: inputMetrics }
+  } catch (error) {
+    console.error("Failed to save sleep duration:", error)
+    return { error: "Failed to save sleep duration" }
   }
 }
