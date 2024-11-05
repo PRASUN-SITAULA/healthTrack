@@ -32,6 +32,7 @@ import { Plus } from "lucide-react"
 
 export default function SleepDurationForm({ userId }: { userId: string }) {
   const { toast } = useToast()
+  const [isOpen, setIsOpen] = useState(false)
 
   const form = useForm<z.infer<typeof sleepDurationSchema>>({
     resolver: zodResolver(sleepDurationSchema),
@@ -62,8 +63,14 @@ export default function SleepDurationForm({ userId }: { userId: string }) {
           variant: "destructive",
         })
       } else {
+        toast({
+          title: "Success",
+          description: res.success,
+          variant: "default",
+        })
         reset()
       }
+      setIsOpen(false)
     } catch (error) {
       console.error("Submission error:", error)
       toast({
@@ -74,7 +81,7 @@ export default function SleepDurationForm({ userId }: { userId: string }) {
     }
   }
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
           <Plus className="h-4 w-4" />
@@ -106,17 +113,17 @@ export default function SleepDurationForm({ userId }: { userId: string }) {
                 </FormItem>
               )}
             />
+            <DialogFooter>
+              <SubmitButton
+                type="submit"
+                pending={isSubmitting}
+                pendingText="Saving"
+              >
+                Save
+              </SubmitButton>
+            </DialogFooter>
           </form>
         </Form>
-        <DialogFooter>
-          <SubmitButton
-            type="submit"
-            pending={isSubmitting}
-            pendingText="Saving"
-          >
-            Save
-          </SubmitButton>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   )

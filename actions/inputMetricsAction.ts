@@ -115,15 +115,15 @@ export const updateHealthMetric = async (
 
 export const saveSleepDuration = async (duration: number, userId: string) => {
   try {
-    const inputMetrics = await prisma.sleepDuration.create({
+    const sleepData = await prisma.sleepDuration.create({
       data: {
-        sleepduration: duration,
+        duration: duration,
         user: {
           connect: { id: userId },
         },
       },
     })
-    return { success: "Data added Successfully.", data: inputMetrics }
+    return { success: "Sleep duration added Successfully.", data: sleepData }
   } catch (error) {
     console.error("Failed to save sleep duration:", error)
     return { error: "Failed to save sleep duration" }
