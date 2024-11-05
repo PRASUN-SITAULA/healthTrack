@@ -129,3 +129,20 @@ export const saveSleepDuration = async (duration: number, userId: string) => {
     return { error: "Failed to save sleep duration" }
   }
 }
+
+export const saveWalkingSteps = async (steps: number, userId: string) => {
+  try {
+    const walkingData = await prisma.walkingSteps.create({
+      data: {
+        steps,
+        user: {
+          connect: { id: userId },
+        },
+      },
+    })
+    return { success: "Walking steps added Successfully.", data: walkingData }
+  } catch (error) {
+    console.error("Failed to save walking steps:", error)
+    return { error: "Failed to save walking steps" }
+  }
+}

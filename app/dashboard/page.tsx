@@ -53,6 +53,7 @@ import WaterIntakeTracker from "@/components/form/waterIntakeForm"
 import { getWaterIntake } from "@/actions/waterIntakeAction"
 import { calculateBMI } from "@/utils/healthCalculations"
 import SleepDurationTracker from "@/components/form/sleepDurationForm"
+import WalkingStepsTracker from "@/components/form/walkingStepsForm"
 
 export default async function Dashboard() {
   const { user } = await getUserAndSession()
@@ -87,19 +88,29 @@ export default async function Dashboard() {
             <CardDescription>{healthTip.description}</CardDescription>
           </CardContent>
         </Card>
-        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
           <WaterIntakeTracker
             userId={user.id}
             waterIntakeAmount={waterIntake.waterIntake}
           />
-          <Card className="flex h-fit flex-col justify-center border-2 border-blue-200 dark:border-slate-800">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-2xl font-bold">
-                Add Sleep Duration
-              </CardTitle>
-              <SleepDurationTracker userId={user.id} />
-            </CardHeader>
-          </Card>
+          <div className="flex flex-col gap-4">
+            <Card className="flex h-fit flex-col justify-center border-2 border-blue-200 dark:border-slate-800">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-2xl font-bold">
+                  Add Sleep Duration
+                </CardTitle>
+                <SleepDurationTracker userId={user.id} />
+              </CardHeader>
+            </Card>
+            <Card className="flex h-fit flex-col justify-center border-2 border-blue-200 dark:border-slate-800">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-2xl font-bold">
+                  Add Walking Steps
+                </CardTitle>
+                <WalkingStepsTracker userId={user.id} />
+              </CardHeader>
+            </Card>
+          </div>
         </section>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <Card className="border-2 border-blue-200 dark:border-slate-800">
