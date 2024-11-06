@@ -52,7 +52,6 @@ export const DataTable = async ({ userId }: { userId: string }) => {
   const sortedDates = Array.from(allDates).sort(
     (a, b) => new Date(b).getTime() - new Date(a).getTime(),
   )
-  console.log(data)
   return (
     <>
       <Table>
