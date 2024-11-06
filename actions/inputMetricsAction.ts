@@ -123,6 +123,7 @@ export const saveSleepDuration = async (duration: number, userId: string) => {
         },
       },
     })
+    revalidatePath("/dashboard")
     return { success: "Sleep duration added Successfully.", data: sleepData }
   } catch (error) {
     console.error("Failed to save sleep duration:", error)
@@ -140,6 +141,7 @@ export const saveWalkingSteps = async (steps: number, userId: string) => {
         },
       },
     })
+    revalidatePath("/dashboard")
     return { success: "Walking steps added Successfully.", data: walkingData }
   } catch (error) {
     console.error("Failed to save walking steps:", error)
@@ -147,16 +149,28 @@ export const saveWalkingSteps = async (steps: number, userId: string) => {
   }
 }
 
-export const getStepsAndSleep = async (userId: string) => {
+export const getStepsAndSleep = cache(async (userId: string) => {
   try {
     const steps = await prisma.walkingSteps.findMany({
       where: {
         userId: userId,
       },
+      select: {
+        id: true,
+        steps: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     })
     const sleep = await prisma.sleepDuration.findMany({
       where: {
         userId: userId,
+      },
+      select: {
+        id: true,
+        duration: true,
+        createdAt: true,
+        updatedAt: true,
       },
     })
     return { success: "Data fetched successfully", data: { steps, sleep } }
@@ -164,4 +178,4 @@ export const getStepsAndSleep = async (userId: string) => {
     console.error("Failed to get data", error)
     return { error: "Something wrong happened. Please try again." }
   }
-}
+})

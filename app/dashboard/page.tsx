@@ -54,6 +54,7 @@ import { getWaterIntake } from "@/actions/waterIntakeAction"
 import { calculateBMI } from "@/utils/healthCalculations"
 import SleepDurationTracker from "@/components/form/sleepDurationForm"
 import WalkingStepsTracker from "@/components/form/walkingStepsForm"
+import { DataTable } from "./_components/data-table"
 
 export default async function Dashboard() {
   const { user } = await getUserAndSession()
@@ -227,87 +228,13 @@ export default async function Dashboard() {
             </CardContent>
           </Card>
         </div>
-
         <Card className="w-full border-2 border-blue-200 dark:border-slate-800">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Health Log</CardTitle>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="bottom-4 right-4 z-50 h-7 gap-1 text-sm"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>Add Health Data</span>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Add Health Data</DialogTitle>
-                  <DialogDescription>
-                    Enter your latest health metrics to track your progress.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="heartRate" className="text-right">
-                      Heart Rate
-                    </Label>
-                    <Input
-                      id="heartRate"
-                      type="number"
-                      className="col-span-3"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="bloodPressure" className="text-right">
-                      Blood Pressure
-                    </Label>
-                    <div className="col-span-3 flex gap-2">
-                      <Input
-                        id="bloodPressureSystolic"
-                        type="number"
-                        placeholder="Systolic"
-                      />
-                      <Input
-                        id="bloodPressureDiastolic"
-                        type="number"
-                        placeholder="Diastolic"
-                      />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="steps" className="text-right">
-                      Steps
-                    </Label>
-                    <Input id="steps" type="number" className="col-span-3" />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="sleep" className="text-right">
-                      Sleep
-                    </Label>
-                    <div className="col-span-3 flex gap-2">
-                      <Input
-                        id="sleepHours"
-                        type="number"
-                        placeholder="Hours"
-                      />
-                      <Input
-                        id="sleepMinutes"
-                        type="number"
-                        placeholder="Minutes"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button type="submit">Save Data</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-2xl font-medium">Health Log</CardTitle>
           </CardHeader>
-          <CardContent></CardContent>
+          <CardContent>
+            <DataTable userId={user.id} />
+          </CardContent>
         </Card>
       </main>
     </div>
