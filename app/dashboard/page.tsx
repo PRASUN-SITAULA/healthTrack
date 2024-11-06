@@ -43,6 +43,7 @@ import {
   Plus,
   PersonStanding,
   Gauge,
+  TrendingUp,
 } from "lucide-react"
 import { EditHealthMetricDialog } from "@/components/edit-dialog"
 import { getUserAndSession } from "@/utils/auth/getUserSession"
@@ -57,6 +58,7 @@ import WalkingStepsTracker from "@/components/form/walkingStepsForm"
 import { DataTable } from "./_components/data-table"
 import { Suspense } from "react"
 import SkeletonLoader from "@/components/loader"
+import Link from "next/link"
 
 export default async function Dashboard() {
   const { user } = await getUserAndSession()
@@ -116,9 +118,9 @@ export default async function Dashboard() {
               </Card>
             </div>
           </section>
-          <div className="col-span-full h-px bg-border" />
+          {/* <div className="col-span-full h-px bg-border" /> */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <Card className="border-2 border-blue-200 dark:border-slate-800">
+            {/*<Card className="border-2 border-blue-200 dark:border-slate-800">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">
                   Heart Rate
@@ -167,7 +169,7 @@ export default async function Dashboard() {
                   Total for last night
                 </p>
               </CardContent>
-            </Card>
+            </Card> */}
             <div className="col-span-full h-px bg-border" />
             <p className="text-md col-span-full mb-2 mt-2 text-muted-foreground">
               Latest Data as of{" "}
@@ -247,6 +249,10 @@ export default async function Dashboard() {
           <Card className="w-full border-2 border-blue-200 dark:border-slate-800">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-2xl font-medium">Health Log</CardTitle>
+              <Button variant="outline" size="sm" className="h-7 gap-1 text-sm">
+                <Link href="/charts">View Charts</Link>
+                <TrendingUp className="h-3.5 w-3.5" />
+              </Button>
             </CardHeader>
             <CardContent>
               <DataTable userId={user.id} />

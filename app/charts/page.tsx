@@ -2,7 +2,8 @@ import { getStepsAndSleep } from "@/actions/inputMetricsAction"
 import SleepChart from "./_components/sleepStepsCharts"
 import { getUserAndSession } from "@/utils/auth/getUserSession"
 import { redirect } from "next/navigation"
-import { SleepDuration } from "@prisma/client"
+import { Suspense } from "react"
+import SkeletonLoader from "@/components/loader"
 
 export default async function ChartsPage() {
   const { user } = await getUserAndSession()
@@ -27,5 +28,15 @@ export default async function ChartsPage() {
       .sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
       ) || []
-  return <SleepChart data={sleepData} />
+
+  return (
+    <main className="flex w-full flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
+        <h1 className="my-4 text-3xl font-bold">Charts</h1>
+        <Suspense fallback={<SkeletonLoader />}>
+          <SleepChart data={sleepData} />
+        </Suspense>
+      </div>
+    </main>
+  )
 }
