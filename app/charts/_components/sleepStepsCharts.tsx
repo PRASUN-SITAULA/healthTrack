@@ -10,7 +10,9 @@ import {
   ResponsiveContainer,
   Bar,
   BarChart,
+  TooltipProps,
 } from "recharts"
+
 import {
   Card,
   CardContent,
@@ -19,6 +21,10 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart"
+import {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent"
 
 const getWeekday = (dateString: string) => {
   const days = [
@@ -46,6 +52,22 @@ interface ChartData {
   steps?: number
 }
 
+// Update the interfaces
+interface TooltipPayload {
+  value: number
+  payload: {
+    weekday: string
+    date: string
+    formattedDuration: string | null
+    steps?: number
+    duration?: number
+  }
+}
+
+interface CustomTooltipProps extends TooltipProps<ValueType, NameType> {
+  metric: "Sleep Duration" | "Steps"
+}
+
 export default function SleepStepsChart({ data }: { data: ChartData[] }) {
   const chartData = data.map((item) => ({
     ...item,
@@ -55,7 +77,12 @@ export default function SleepStepsChart({ data }: { data: ChartData[] }) {
       : null,
   }))
 
-  const CustomTooltip = ({ active, payload, label, metric }: any) => {
+  const CustomTooltip = ({
+    active,
+    payload,
+    label,
+    metric,
+  }: CustomTooltipProps) => {
     if (active && payload && payload.length) {
       return (
         <div className="rounded-lg border bg-background p-2 shadow-sm">

@@ -3,7 +3,6 @@ import { ThemeProvider } from "next-themes"
 import "./globals.css"
 import { Navbar } from "@/components/navbar/navbar"
 import { Toaster } from "@/components/ui/toaster"
-import { ReactQueryProvider } from "@/app/providers"
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -31,7 +30,7 @@ export default async function RootLayout({
         >
           {/* <NavbarWrapper /> */}
           <Navbar />
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          {children}
           <Toaster />
         </ThemeProvider>
       </body>
