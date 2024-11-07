@@ -4,6 +4,7 @@ import { getUserAndSession } from "@/utils/auth/getUserSession"
 import { redirect } from "next/navigation"
 import { Suspense } from "react"
 import SkeletonLoader from "@/components/loader"
+import DataMessage from "./_components/dataMessage"
 
 export default async function ChartsPage() {
   const { user } = await getUserAndSession()
@@ -16,25 +17,41 @@ export default async function ChartsPage() {
     return <div>Error: {error}</div>
   }
   if (!data) {
-    return <div>No data</div>
+    return <DataMessage />
   }
-  // Transform data server-side
-  const sleepData =
-    data.sleep
-      ?.map((sleepEntry) => ({
-        date: new Date(sleepEntry.createdAt).toISOString().split("T")[0],
-        duration: sleepEntry.duration,
-      }))
-      .sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-      ) || []
+  // Create a map of all dates with their respective data
+  const dateMap = new Map()
+
+  // Add sleep data
+  data.sleep?.forEach((sleepEntry) => {
+    const date = new Date(sleepEntry.createdAt).toISOString().split("T")[0]
+    dateMap.set(date, {
+      date,
+      duration: sleepEntry.duration,
+    })
+  })
+
+  // Add steps data
+  data.steps?.forEach((stepsEntry) => {
+    const date = new Date(stepsEntry.createdAt).toISOString().split("T")[0]
+    const existing = dateMap.get(date) || { date }
+    dateMap.set(date, {
+      ...existing,
+      steps: stepsEntry.steps,
+    })
+  })
+
+  // Convert map to array and sort by date
+  const combinedData = Array.from(dateMap.values()).sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+  )
 
   return (
     <main className="flex w-full flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center">
         <h1 className="my-4 text-3xl font-bold">Charts</h1>
         <Suspense fallback={<SkeletonLoader />}>
-          <SleepChart data={sleepData} />
+          <SleepChart data={combinedData} />
         </Suspense>
       </div>
     </main>
