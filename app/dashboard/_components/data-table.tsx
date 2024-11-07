@@ -7,6 +7,7 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table"
+import { isActionError } from "@/utils/error"
 
 // Helper function to format date
 const formatDate = (date: Date) => {
@@ -21,15 +22,15 @@ const formatSleep = (hours: number) => {
 }
 
 export const DataTable = async ({ userId }: { userId: string }) => {
-  const { data, error } = await getStepsAndSleep(userId)
-  if (error) {
+  const res = await getStepsAndSleep(userId)
+  if (isActionError(res)) {
     return (
       <div className="text-muted-foreground">
         Error loading data. Please try again.
       </div>
     )
   }
-  if (!data) {
+  if (!res.data) {
     return (
       <div className="text-muted-foreground">
         No data available. Please add some data.
@@ -40,11 +41,11 @@ export const DataTable = async ({ userId }: { userId: string }) => {
   const allDates = new Set<string>()
 
   // Assuming steps and sleep data have date fields
-  data.steps?.forEach((step) => {
+  res.data.steps?.forEach((step) => {
     allDates.add(formatDate(step.createdAt))
   })
 
-  data.sleep?.forEach((sleep) => {
+  res.data.sleep?.forEach((sleep) => {
     allDates.add(formatDate(sleep.createdAt))
   })
 
@@ -68,10 +69,10 @@ export const DataTable = async ({ userId }: { userId: string }) => {
         <TableBody>
           {sortedDates.map((date) => {
             // Find corresponding steps and sleep data for this date
-            const stepsData = data.steps?.find(
+            const stepsData = res.data.steps?.find(
               (step) => formatDate(step.createdAt) === date,
             )
-            const sleepData = data.sleep?.find(
+            const sleepData = res.data.sleep?.find(
               (sleep) => formatDate(sleep.createdAt) === date,
             )
 

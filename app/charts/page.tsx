@@ -5,25 +5,36 @@ import { redirect } from "next/navigation"
 import { Suspense } from "react"
 import SkeletonLoader from "@/components/loader"
 import DataMessage from "./_components/dataMessage"
+import { isActionError } from "@/utils/error"
 
 export default async function ChartsPage() {
   const { user } = await getUserAndSession()
   if (!user) {
     redirect("/sign-in")
   }
-  const { data, error } = await getStepsAndSleep(user.id)
+  const res = await getStepsAndSleep(user.id)
 
-  if (error) {
-    return <div>Error: {error}</div>
+  if (isActionError(res)) {
+    return (
+      <DataMessage
+        message="Some error occurred. Please try again."
+        type={"error"}
+      />
+    )
   }
-  if (!data) {
-    return <DataMessage />
+  if (!res.data) {
+    return (
+      <DataMessage
+        message="Please enter some data to view charts."
+        type={"info"}
+      />
+    )
   }
   // Create a map of all dates with their respective data
   const dateMap = new Map()
 
   // Add sleep data
-  data.sleep?.forEach((sleepEntry) => {
+  res.data.sleep?.forEach((sleepEntry) => {
     const date = new Date(sleepEntry.createdAt).toISOString().split("T")[0]
     dateMap.set(date, {
       date,
@@ -32,7 +43,7 @@ export default async function ChartsPage() {
   })
 
   // Add steps data
-  data.steps?.forEach((stepsEntry) => {
+  res.data.steps?.forEach((stepsEntry) => {
     const date = new Date(stepsEntry.createdAt).toISOString().split("T")[0]
     const existing = dateMap.get(date) || { date }
     dateMap.set(date, {

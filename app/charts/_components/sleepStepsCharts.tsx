@@ -94,7 +94,7 @@ export default function SleepStepsChart({ data }: { data: ChartData[] }) {
   }
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:flex-row">
+    <div className="flex w-full flex-col gap-4 md:flex-col lg:flex-col xl:flex-col 2xl:flex-row">
       {/* Sleep Duration Chart */}
       <Card className="w-full">
         <CardHeader>

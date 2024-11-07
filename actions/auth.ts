@@ -62,7 +62,6 @@ export async function signup(data: z.infer<typeof signUpUserSchema>) {
 }
 
 export async function signin(data: z.infer<typeof signInUserSchema>) {
-  console.log("I am here.")
   const result = signInUserSchema.safeParse(data)
   const email = result.data?.email as string
   const password = result.data?.password as string
