@@ -22,7 +22,8 @@ export default async function ChartsPage() {
       />
     )
   }
-  if (!res.data) {
+  console.log(res.data)
+  if (!res.data || res.data.steps.length === 0 || res.data.sleep.length === 0) {
     return (
       <DataMessage
         message="Please enter some data to view charts."

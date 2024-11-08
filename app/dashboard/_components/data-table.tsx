@@ -30,7 +30,7 @@ export const DataTable = async ({ userId }: { userId: string }) => {
       </div>
     )
   }
-  if (!res.data) {
+  if (!res.data || res.data.steps.length === 0 || res.data.sleep.length === 0) {
     return (
       <div className="text-muted-foreground">
         No data available. Please add some data.

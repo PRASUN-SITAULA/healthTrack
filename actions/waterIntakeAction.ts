@@ -20,11 +20,15 @@ export const getWaterIntake = cache(async (userId: string) => {
     today.setHours(0, 0, 0, 0)
 
     if (!waterIntakeAmount || waterIntakeAmount?.updatedAt < today) {
-      await prisma.waterIntake.update({
+      await prisma.waterIntake.upsert({
         where: {
           userId: userId,
         },
-        data: {
+        update: {
+          amount: 0,
+        },
+        create: {
+          userId: userId,
           amount: 0,
         },
       })
