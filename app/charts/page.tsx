@@ -22,7 +22,6 @@ export default async function ChartsPage() {
       />
     )
   }
-  console.log(res.data)
   if (!res.data || res.data.steps.length === 0 || res.data.sleep.length === 0) {
     return (
       <DataMessage

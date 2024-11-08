@@ -33,9 +33,6 @@ export default function WaterIntakeTracker({
 
   const form = useForm<z.infer<typeof waterIntakeSchema>>({
     resolver: zodResolver(waterIntakeSchema),
-    defaultValues: {
-      amount: undefined,
-    },
   })
 
   async function onSubmit(values: z.infer<typeof waterIntakeSchema>) {
@@ -48,15 +45,18 @@ export default function WaterIntakeTracker({
     setWaterIntake(newIntake)
 
     try {
-      const res = await updateWaterIntake(amount, userId)
+      const res = await updateWaterIntake(newIntake, userId)
       if (isActionError(res)) {
         toast({
           title: "Error",
           description: res.error,
           variant: "destructive",
         })
+        form.reset({
+          amount: 0,
+        })
       } else {
-        form.reset()
+        form.reset({ amount: 0 })
       }
     } catch (error) {
       console.error("Submission error:", error)
@@ -65,6 +65,7 @@ export default function WaterIntakeTracker({
         description: "Something went wrong",
         variant: "destructive",
       })
+      form.reset({ amount: 0 })
     }
   }
 
@@ -91,6 +92,7 @@ export default function WaterIntakeTracker({
                         type="number"
                         placeholder="Enter water intake (ml)"
                         {...field}
+                        value={field.value > 0 ? field.value : ""}
                         onChange={(e) => field.onChange(e.target.valueAsNumber)}
                         className="flex-grow"
                       />
