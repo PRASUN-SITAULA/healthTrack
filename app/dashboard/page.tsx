@@ -249,10 +249,16 @@ export default async function Dashboard() {
           <Card className="w-full border-2 border-blue-200 dark:border-slate-800">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-2xl font-medium">Health Log</CardTitle>
-              <Button variant="outline" size="sm" className="h-7 gap-1 text-sm">
-                <Link href="/charts">View Charts</Link>
-                <TrendingUp className="h-3.5 w-3.5" />
-              </Button>
+              <Link href="/charts">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-7 gap-1 text-sm"
+                >
+                  <span>View Charts</span>
+                  <TrendingUp className="h-3.5 w-3.5" />
+                </Button>
+              </Link>
             </CardHeader>
             <CardContent>
               <DataTable userId={user.id} />

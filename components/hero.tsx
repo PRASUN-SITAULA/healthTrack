@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Heart, Activity, Utensils, Moon } from "lucide-react"
+import { Activity, Moon } from "lucide-react"
 import { getUserAndSession } from "@/utils/auth/getUserSession"
 import { redirect } from "next/navigation"
 
@@ -21,15 +21,14 @@ export default async function Home() {
                   Track Your Health, Transform Your Life
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-500 dark:text-gray-400 md:text-xl">
-                  HealthTracker helps you monitor your vital stats, diet, and
-                  sleep patterns to improve your overall well-being.
+                  HealthTracker helps you monitor your vital stats, water
+                  intake, and sleep patterns to improve your overall well-being.
                 </p>
               </div>
               <div className="space-x-4">
                 <Link href="/dashboard">
                   <Button>Get Started</Button>
                 </Link>
-                <Button variant="outline">Learn More</Button>
               </div>
             </div>
           </div>
@@ -39,32 +38,14 @@ export default async function Home() {
             <h2 className="mb-12 text-center text-3xl font-bold tracking-tighter sm:text-5xl">
               Key Features
             </h2>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="flex flex-col items-center justify-center gap-6 sm:flex-col md:flex-row">
               <Card>
                 <CardHeader>
                   <Activity className="mb-2 h-6 w-6 text-primary" />
                   <CardTitle>Activity Tracking</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p>Monitor your daily steps, workouts, and calorie burn.</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Heart className="mb-2 h-6 w-6 text-red-500" />
-                  <CardTitle>Heart Rate Monitoring</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>Keep track of your heart rate during rest and exercise.</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Utensils className="mb-2 h-6 w-6 text-green-500" />
-                  <CardTitle>Nutrition Logging</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>Log your meals and track your nutritional intake.</p>
+                  <p>Monitor your daily steps and water intake.</p>
                 </CardContent>
               </Card>
               <Card>
@@ -91,7 +72,9 @@ export default async function Home() {
                   HealthTracker.
                 </p>
               </div>
-              <Button size="lg">Sign Up Now</Button>
+              <Link href="/sign-up">
+                <Button size="lg">Sign Up Now</Button>
+              </Link>
             </div>
           </div>
         </section>
