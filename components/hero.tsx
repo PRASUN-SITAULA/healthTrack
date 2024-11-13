@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Activity, Moon } from "lucide-react"
+import { Activity, Archive, Moon } from "lucide-react"
 import { getUserAndSession } from "@/utils/auth/getUserSession"
 import { redirect } from "next/navigation"
 
@@ -55,6 +55,17 @@ export default async function Home() {
                 </CardHeader>
                 <CardContent>
                   <p>Analyze your sleep patterns for better rest.</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <Archive className="mb-2 h-6 w-6 text-primary" />
+                  <CardTitle>Record Saving</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>
+                    Save your height, weight and blood sugar levels details.
+                  </p>
                 </CardContent>
               </Card>
             </div>
