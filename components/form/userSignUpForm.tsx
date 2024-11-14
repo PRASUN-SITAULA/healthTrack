@@ -105,6 +105,7 @@ export default function UserSignUpForm() {
                 <FormLabel>Password</FormLabel>
                 <Input
                   autoComplete="off"
+                  type="password"
                   placeholder="Enter your password"
                   className="input input-bordered"
                   {...field}

@@ -26,6 +26,10 @@ export default function UserSignInForm() {
 
   const form = useForm<z.infer<typeof signInUserSchema>>({
     resolver: zodResolver(signInUserSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   })
 
   const {
@@ -88,6 +92,7 @@ export default function UserSignInForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <Input
+                  type="password"
                   placeholder="Enter your password"
                   className="input input-bordered"
                   {...field}
