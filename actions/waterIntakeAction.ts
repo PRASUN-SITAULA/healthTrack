@@ -48,6 +48,10 @@ export const getWaterIntake = unstable_cache(
     }
   },
   ["water-intake"],
+  {
+    tags: ["water-intake"],
+    revalidate: false,
+  },
 )
 
 export const updateWaterIntake = async (amount: number, userId: string) => {

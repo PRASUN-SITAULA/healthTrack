@@ -59,6 +59,10 @@ export const getHealthMetric = unstable_cache(
     }
   },
   ["health-metric"],
+  {
+    tags: ["health-metric"],
+    revalidate: false,
+  },
 )
 
 // updating metrics through single function
@@ -126,7 +130,7 @@ export const saveSleepDuration = async (duration: number, userId: string) => {
         },
       },
     })
-    revalidateTag("/steps-and-sleep")
+    revalidateTag("steps-and-sleep")
     return { success: "Sleep duration added Successfully.", data: sleepData }
   } catch (error) {
     console.error("Failed to save sleep duration:", error)
@@ -144,7 +148,7 @@ export const saveWalkingSteps = async (steps: number, userId: string) => {
         },
       },
     })
-    revalidateTag("/steps-and-sleep")
+    revalidateTag("steps-and-sleep")
     return { success: "Walking steps added Successfully.", data: walkingData }
   } catch (error) {
     console.error("Failed to save walking steps:", error)
@@ -184,4 +188,8 @@ export const getStepsAndSleep = unstable_cache(
     }
   },
   ["steps-and-sleep"],
+  {
+    tags: ["steps-and-sleep"],
+    revalidate: false,
+  },
 )
