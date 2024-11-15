@@ -8,7 +8,7 @@ import {
   bloodGlucoseSchema,
 } from "@/config/inputMetricSchema"
 import { cache } from "react"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag, unstable_cache } from "next/cache"
 import { sleepDurationSchema } from "@/config/sleepDurationSchema"
 
 export async function saveHealthMetric(
@@ -37,26 +37,29 @@ export async function saveHealthMetric(
   }
 }
 
-export const getHealthMetric = cache(async (userId: string) => {
-  try {
-    const data = await prisma.inputMetrics.findUnique({
-      where: {
-        userId: userId,
-      },
-      select: {
-        weight: true,
-        height: true,
-        bloodGlucoseLevel: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    })
-    return { sucess: "Data fetched", data: data }
-  } catch (error) {
-    console.error("Failed to get data", error)
-    return { error: "Something wrong happened. Please try again." }
-  }
-})
+export const getHealthMetric = unstable_cache(
+  async (userId: string) => {
+    try {
+      const data = await prisma.inputMetrics.findUnique({
+        where: {
+          userId: userId,
+        },
+        select: {
+          weight: true,
+          height: true,
+          bloodGlucoseLevel: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      })
+      return { sucess: "Data fetched", data: data }
+    } catch (error) {
+      console.error("Failed to get data", error)
+      return { error: "Something wrong happened. Please try again." }
+    }
+  },
+  ["health-metric"],
+)
 
 // updating metrics through single function
 // same function will be used for all metrics
@@ -105,7 +108,7 @@ export const updateHealthMetric = async (
         })
         break
     }
-    revalidatePath("/dashboard")
+    revalidateTag("health-metric")
     return { success: "Data updated successfully" }
   } catch (error) {
     console.error("Failed to update health metric", error)
@@ -123,7 +126,7 @@ export const saveSleepDuration = async (duration: number, userId: string) => {
         },
       },
     })
-    revalidatePath("/dashboard")
+    revalidateTag("/steps-and-sleep")
     return { success: "Sleep duration added Successfully.", data: sleepData }
   } catch (error) {
     console.error("Failed to save sleep duration:", error)
@@ -141,7 +144,7 @@ export const saveWalkingSteps = async (steps: number, userId: string) => {
         },
       },
     })
-    revalidatePath("/dashboard")
+    revalidateTag("/steps-and-sleep")
     return { success: "Walking steps added Successfully.", data: walkingData }
   } catch (error) {
     console.error("Failed to save walking steps:", error)
@@ -149,33 +152,36 @@ export const saveWalkingSteps = async (steps: number, userId: string) => {
   }
 }
 
-export const getStepsAndSleep = cache(async (userId: string) => {
-  try {
-    const steps = await prisma.walkingSteps.findMany({
-      where: {
-        userId: userId,
-      },
-      select: {
-        id: true,
-        steps: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    })
-    const sleep = await prisma.sleepDuration.findMany({
-      where: {
-        userId: userId,
-      },
-      select: {
-        id: true,
-        duration: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    })
-    return { success: "Data fetched successfully", data: { steps, sleep } }
-  } catch (error) {
-    console.error("Failed to get data", error)
-    return { error: "Something wrong happened. Please try again." }
-  }
-})
+export const getStepsAndSleep = unstable_cache(
+  async (userId: string) => {
+    try {
+      const steps = await prisma.walkingSteps.findMany({
+        where: {
+          userId: userId,
+        },
+        select: {
+          id: true,
+          steps: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      })
+      const sleep = await prisma.sleepDuration.findMany({
+        where: {
+          userId: userId,
+        },
+        select: {
+          id: true,
+          duration: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      })
+      return { success: "Data fetched successfully", data: { steps, sleep } }
+    } catch (error) {
+      console.error("Failed to get data", error)
+      return { error: "Something wrong happened. Please try again." }
+    }
+  },
+  ["steps-and-sleep"],
+)
